@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Player Lab</title>
+  <style>
+   @import url('https://fonts.googleapis.com/css2?family=Metamorphous&display=swap');  
+
+    body {
+      margin: 0;
+      font-family: 'Metamorphous', cursive;
+
+
+      background: linear-gradient(270deg, magenta, maroon, darkslategray, olive, maroon, crimson, black, forestgreen);
+      background-size: 1000% 1000%;
+      animation: bgShift 30s ease infinite;
+      color: whitesmoke;
+      text-transform: uppercase;
+      overflow-x: hidden;
+    }
+
+    @keyframes bgShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+	  
+    @keyframes rainbowGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+	  
+    h1 {
+      font-size: 120px;
+      text-align: center;
+      background: linear-gradient(90deg, red, orange, whitesmoke, yellow, pink, violet, limegreen);
+      background-size: 1000% 1000%;
+      animation: bgShift 30s ease infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      letter-spacing: 2px;
+      margin: 20px 0 0;
+    }
+
+    /* ---- FIXED HEIGHT CONTAINER FOR SPINNING WORDS ---- */
+    #slots {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto 40px; /* push GO + history lower */
+    }
+
+    #slots .column {
+      position: relative;
+      width: 250px;   /* fixed column width */
+      height: 120px;  /* locks the height so layout doesn’t bounce */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 45px;
+    }
+
+    #slots .column span {
+      position: absolute; /* prevents text from pushing layout */
+      text-align: center;
+      line-height: 1;
+    }
+
+    #history {
+      max-width: 1200px;
+      margin: 20px auto 0;
+      text-align: left;
+      font-size: 45px;
+      line-height: 1.1;
+    }
+
+    .set {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 10px;
+      align-items: baseline;
+    }
+
+    .set-number {
+      font-size: 40px;
+      opacity: 0.2;
+      margin-right: 20px;
+    }
+
+    #go {
+      display: block;
+      margin: 10px auto 30px;
+      font-size: 90px;
+      text-transform: uppercase;
+      background: linear-gradient(
+        270deg,
+        red, violet, yellow, pink, orange, white
+      );
+      background-size: 600% 600%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      border: none;
+      cursor: pointer;
+     font-family: 'Metamorphous', cursive;
+      animation: floaty 0.6s infinite, rainbowGradient 6s infinite linear;
+    }
+
+    @keyframes floaty {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      10% { transform: translate(-2px, 2px) rotate(-2deg); }
+      20% { transform: translate(2px, -2px) rotate(2deg); }
+      30% { transform: translate(-3px, 1px) rotate(-1deg); }
+      40% { transform: translate(3px, -1px) rotate(1deg); }
+      50% { transform: translate(-2px, 2px) rotate(-2deg); }
+      60% { transform: translate(2px, -2px) rotate(2deg); }
+      70% { transform: translate(-1px, 1px) rotate(-1deg); }
+      80% { transform: translate(1px, -1px) rotate(1deg); }
+      90% { transform: translate(-2px, 2px) rotate(1deg); }
+    }
+	  
+    @keyframes shakeHarder {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      10% { transform: translate(-4px, 4px) rotate(-4deg); }
+      20% { transform: translate(4px, -4px) rotate(4deg); }
+      30% { transform: translate(-5px, 2px) rotate(-3deg); }
+      40% { transform: translate(5px, -2px) rotate(3deg); }
+      50% { transform: translate(-4px, 4px) rotate(-4deg); }
+      60% { transform: translate(4px, -4px) rotate(4deg); }
+      70% { transform: translate(-3px, 3px) rotate(-3deg); }
+      80% { transform: translate(3px, -3px) rotate(3deg); }
+      90% { transform: translate(-5px, 2px) rotate(-2deg); }
+    }
+
+    footer {
+	max-width: 1200px;
+      text-align: center;
+      margin: 40px auto;
+      font-size: 20px;
+      opacity: 0.7;
+    }
+
+    /* --- MOBILE RESPONSIVE STYLES --- */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 60px;
+        margin-top: 10px;
+      }
+      #slots {
+        flex-direction: column;
+        align-items: center;
+      }
+      #slots .column {
+        width: auto;
+        height: 80px; /* smaller fixed height for mobile */
+        font-size: 50px;
+      }
+      #history {
+        font-size: 30px;
+      }
+      .set-number {
+        font-size: 20px;
+      }
+      #go {
+        font-size: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>PLAYER LAB</h1>
+  <div id="slots">
+    <div class="column"><span id="col1">ALIGNMENT</span></div>
+    <div class="column"><span id="col2">SPECIES</span></div>
+    <div class="column"><span id="col3">CLASS</span></div>
+  </div>
+
+<button id="go">GO</button>
+
+<div id="history">
+    <div class="set"><span class="set-number">1.</span><span id="h1"></span></div>
+    <div class="set"><span class="set-number">2.</span><span id="h2"></span></div>
+    <div class="set"><span class="set-number">3.</span><span id="h3"></span></div>
+  </div>
+
+  <footer>
+  By EMU Industries for Non-Commercial Use. Our rolled twenties are all natural.</footer>
+
+  <script>
+    const column1 = ["Lawful Good", "Neutral Good", "Chaotic Good", "Lawful Neutral", "True Neutral", "Chaotic Neutral", "Lawful Evil","Neutral Evil","Chaotic Evil"];
+    const column2 = ["Dragonborn", "Duergar","Hill Dwarf"," Mountain Dwarf","Drow", "Elf", "Sea Elf", "Gnome", "Forest Gnome", "Rock Gnome", "Half-Elf", "Halfling", 
+	"Half-Orc","Human","Tiefling","Fairy","Firbolg","Genasi","Gith","Goblin","Goliath","Grung","Harengon","Hobgoblin","Kalashtar","Kenku","Kobold","Leonin","Lizardfolk","Lokathah","Loxodon","Minotaur","Orc","Owlin","Satyr","Shifter","Simic Hybrid","Tabaxi","Tortle","Triton","Vedalken","Verdan","Warforged","Yuan-ti"];
+    const column3 = ["Artificer", "Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger", "Rogue", "Sorcerer", "Warlock", "Wizard"];
+
+    const colors = generateRainbowColors(48);
+
+    let historyIndex = 0;
+
+    function randomWord(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    // Generate an array of rainbow hues
+    function generateRainbowColors(count = 48, saturation = 100, lightness = 50) {
+      const colors = [];
+      for (let i = 0; i < count; i++) {
+        const hue = Math.round((360 / count) * i); // spread evenly around the color wheel
+        colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+      }
+      return colors;
+    }
+	  
+    function randomColor() {
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+     function spinColumn(col, words, delay, callback) {
+      let interval = setInterval(() => {
+        col.textContent = randomWord(words);
+      }, 80);
+      setTimeout(() => {
+        clearInterval(interval);
+        col.textContent = randomWord(words);
+        callback && callback();
+      }, delay);
+    }
+
+    document.getElementById("go").addEventListener("click", () => {
+      const col1 = document.getElementById("col1");
+      const col2 = document.getElementById("col2");
+      const col3 = document.getElementById("col3");
+      const color = randomColor();
+
+      spinColumn(col1, column1, 1500, () => {
+        spinColumn(col2, column2, 2500, () => {
+          spinColumn(col3, column3, 3500, () => {
+            setTimeout(() => {
+              const phrase = `${col1.textContent} ${col2.textContent} ${col3.textContent}`;
+
+              // shift #1 → #2, #2 → #3
+              const h1 = document.getElementById("h1");
+              const h2 = document.getElementById("h2");
+              const h3 = document.getElementById("h3");
+
+              h3.textContent = h2.textContent;
+              h3.style.color = h2.style.color;
+              if (h2.textContent) h3.classList.add("filled");
+
+              h2.textContent = h1.textContent;
+              h2.style.color = h1.style.color;
+              if (h1.textContent) h2.classList.add("filled");
+
+              // insert newest at #1
+              h1.textContent = phrase;
+              h1.style.color = whitesmoke;
+              h1.classList.add("filled");
+
+              // recolor live slots
+              col1.style.color = whitesmoke;
+              col2.style.color = whitesmoke;
+              col3.style.color = whitesmoke;
+            }, 1000);
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
